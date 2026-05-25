@@ -1,0 +1,27 @@
+---
+description: Vibe-proof security checklist. Seven checks for hardening a vibe-coded full-stack app, then fix by severity. Apply during a security review.
+alwaysApply: false
+---
+
+# Vibe-proof security checklist
+
+A security-hardening checklist for vibe-coded full-stack apps. Apply this during a security review: audit the frontend, backend, and config layers against the seven checks, then fix findings in severity order.
+
+## The seven checks
+
+1. **Injection vectors**: no user input in SQL without parameterization; sort/filter columns use allowlists; no `eval`/`new Function`; URL params bounds-checked; enum fields validated against `const` allowlists.
+2. **PII and secret exposure**: no hardcoded passwords or backdoor strings; tokens in `Authorization` headers, never URLs; no `.env` in git; no secrets in `NEXT_PUBLIC_*`/`VITE_*`; no `localhost` in production allowlists.
+3. **Missing security headers**: `nosniff`, `X-Frame-Options: DENY`, `X-XSS-Protection: 0`, `Referrer-Policy`, HSTS with preload, `X-DNS-Prefetch-Control: off`; tight CSP without wildcard `img-src` or `unsafe-eval`.
+4. **Error leakage**: no stack traces in responses; 500s return a generic message, not `err.message`; no sensitive `console.log`; structured logger in production.
+5. **Input validation gaps**: POST/PUT bodies validated with Zod or equivalent; params type-coerced and bounded; enum allowlists; file extension from validated MIME type, not filename.
+6. **Dead code and attack surface**: remove unused routes/components/packages; no GET-as-POST aliases; disabled features deleted, not left as `if (false)`.
+7. **Credential hygiene**: 32+ char session secrets; cookie flags (`httpOnly`, `secure`, `sameSite`); trust proxy behind reverse proxies; webhook signature verification; rate limiting on auth/checkout/admin/sync endpoints.
+
+## Fix order by severity
+
+1. CRITICAL: backdoor passwords, injection, credential leaks, secrets in URLs.
+2. HIGH: PII exposure, missing validation, error leakage, missing HSTS, GET-as-POST.
+3. MEDIUM: missing rate limits, enum validation, dead code, CSP tightening.
+4. LOW: unused packages, `console.log`, config optimization.
+
+After each category, run `npm run build` (or the project equivalent) and verify no regressions. If `.env` files were tracked in git, rotate every exposed credential.
