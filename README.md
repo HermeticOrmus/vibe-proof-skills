@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://ormus.solutions/mascot/pixellab_liquid_to_hylian_shield.gif" alt="Vibe Proof Skills" width="128" style="image-rendering: pixelated;" />
+  <img src="https://ormus.solutions/mascot/pixellab_liquid_to_philosopher_stone.gif" alt="Vibe Proof Skills" width="128" style="image-rendering: pixelated;" />
 </p>
 
 <h1 align="center">Vibe Proof Skills</h1>
